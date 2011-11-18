@@ -1,0 +1,6 @@
+<% if @order.outstanding_balance? %>
+  <h4>Thank you for your order, however we're still waiting to hear from Skrill about your payment status.</h4>
+  <p>Your payment is currently <em>Pending</em>, once its completed we'll start processing your shipment.</p>
+<% else %>
+  <p>Your payment has been received from Skrill.</p>
+<% end %>
