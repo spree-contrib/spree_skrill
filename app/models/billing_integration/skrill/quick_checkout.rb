@@ -30,7 +30,6 @@ class BillingIntegration::Skrill::QuickCheckout < BillingIntegration
 
     skrill = self.provider
     sid = skrill.setup_payment_session(opts)
-    puts opts
 
     skrill.session_url(sid)
   end

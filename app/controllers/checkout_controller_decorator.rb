@@ -1,17 +1,35 @@
 CheckoutController.class_eval do
   before_filter :redirect_to_skrill_if_needed, :only => [:update]
+  skip_before_filter :load_order, :only => [:skrill_success]
+  skip_before_filter :check_authorization, :only => [:skrill_success]
 
+  def skrill_cancel
+    flash[:error] = t(:payment_has_been_cancelled)
+    redirect_to edit_order_path(@order)
+  end
 
-  def skrill_return
-    #need to force checkout to complete state
-    until @order.state == "complete"
-      if @order.next!
-        @order.update!
-        state_callback(:after)
+  def skrill_success
+    @order = Order.where(:number => params[:order_id]).first
+
+    if @order.user == current_user
+
+      if @order.payments.where(:source_type => 'SkrillAccount').present?
+
+        #need to force checkout to complete state
+        until @order.state == "complete"
+          if @order.next!
+            @order.update!
+            state_callback(:after)
+          end
+        end
       end
+
+      flash.notice = t(:order_processed_successfully)
+      redirect_to completion_route
+    else
+      redirect_to root_url
     end
 
-    redirect_to completion_route
   end
 
   private
@@ -38,9 +56,9 @@ CheckoutController.class_eval do
         opts = {}
         opts[:transaction_id] = payment.id
         opts[:amount] = payment.amount
-        opts[:return_url] = skrill_return_order_checkout_url(@order)
+        opts[:return_url] = skrill_success_order_checkout_url(@order)
+        opts[:cancel_url] = skrill_cancel_order_checkout_url(@order)
         opts[:status_url] = skrill_status_update_url
-        opts[:cancel_url] = order_url(@order)
 
         payment.started_processing!
         payment.pend!
