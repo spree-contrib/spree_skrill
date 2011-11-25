@@ -8,12 +8,14 @@ method.
 1. Add the following to your Gemfile
 
 <pre>
-    gem 'spree_skrill', :git => 'git://github.com/spree/spree_skrill.git'
+    gem 'spree_skrill', :git => 'git://github.com/spree/spree_skrill.git', :branch => '0-60-stable'
 </pre>
 
 2. Run `bundle install`
 
-3. To copy and apply migrations run: `rails g spree_skrill:install`
+3. To copy migrations run: `rake spree_skrill:install`
+
+4. Run migration `rake db:migrate`
 
 ## Configuring
 
