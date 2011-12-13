@@ -1,5 +1,3 @@
-require 'active_merchant/billing/skrill'
-
 class BillingIntegration::Skrill::QuickCheckout < BillingIntegration
   preference :merchant_id, :string
   preference :language, :string, :default => 'EN'
@@ -31,7 +29,11 @@ class BillingIntegration::Skrill::QuickCheckout < BillingIntegration
     skrill = self.provider
     sid = skrill.setup_payment_session(opts)
 
-    skrill.session_url(sid)
+    if sid =~ /\A[a-z0-9]{32}\z/
+      skrill.session_url(sid)
+    else
+      raise "Unexpected response from Skrill"
+    end
   end
 
   private

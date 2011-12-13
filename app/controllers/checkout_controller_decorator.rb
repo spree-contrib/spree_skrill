@@ -11,7 +11,7 @@ CheckoutController.class_eval do
   def skrill_success
     @order = Order.where(:number => params[:order_id]).first
 
-    if @order.user == current_user
+    if @order.token == params[:token]
 
       if @order.payments.where(:source_type => 'SkrillAccount').present?
 
@@ -56,14 +56,19 @@ CheckoutController.class_eval do
         opts = {}
         opts[:transaction_id] = payment.id
         opts[:amount] = payment.amount
-        opts[:return_url] = skrill_success_order_checkout_url(@order)
-        opts[:cancel_url] = skrill_cancel_order_checkout_url(@order)
+        opts[:return_url] = skrill_success_order_checkout_url(@order, :token => @order.token)
+        opts[:cancel_url] = skrill_cancel_order_checkout_url(@order, :token => @order.token)
         opts[:status_url] = skrill_status_update_url
 
         payment.started_processing!
         payment.pend!
 
-        redirect_to payment_method.redirect_url(@order, opts)
+        begin
+          redirect_to payment_method.redirect_url(@order, opts)
+        rescue Exception => e
+          flash.notice = t(:unable_to_redirect_to_skrill)
+          redirect_to edit_order_checkout_url(@order, :state => 'payment')
+        end
       end
     end
 
