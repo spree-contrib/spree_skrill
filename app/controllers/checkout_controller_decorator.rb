@@ -54,7 +54,7 @@ CheckoutController.class_eval do
           :payment_method => payment_method)
 
         opts = {}
-        opts[:transaction_id] = payment.id
+        opts[:transaction_id] = "#{@order.number}-#{payment.id}"
         opts[:amount] = payment.amount
         opts[:return_url] = skrill_success_order_checkout_url(@order, :token => @order.token)
         opts[:cancel_url] = skrill_cancel_order_checkout_url(@order, :token => @order.token)
