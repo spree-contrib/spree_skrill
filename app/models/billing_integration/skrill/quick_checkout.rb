@@ -26,6 +26,9 @@ class BillingIntegration::Skrill::QuickCheckout < BillingIntegration
     opts[:state] = order.bill_address.state.nil? ? order.bill_address.state_name.to_s : order.bill_address.state.abbr
     opts[:country] = order.bill_address.country.name
 
+    opts[:merchant_fields] = 'platform'
+    opts[:platform] = 'Spree'
+
     skrill = self.provider
     sid = skrill.setup_payment_session(opts)
 
