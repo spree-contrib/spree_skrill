@@ -1,6 +1,8 @@
 class SkrillStatusController < ApplicationController
   def update
-    payment = Payment.find(params[:transaction_id])
+    payment_id = params[:transaction_id].split('-').last
+
+    payment = Payment.find(payment_id)
 
     unless payment.completed?
 
