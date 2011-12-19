@@ -24,11 +24,8 @@ module SpreeSkrill
       Order.state_machine.before_transition :to => 'skrill', :do => Proc.new{ |order|
         skrill_account = SkrillAccount.find_or_create_by_email(order.email)
 
-        payment = order.payments.create(
-          :amount => order.total,
-          :source => skrill_account,
-          :payment_method => order.payment_method)
-
+        payment = order.payment
+        payment.update_attribute(:source, skrill_account)
         payment.started_processing!
         payment.pend!
 

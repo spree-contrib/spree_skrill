@@ -12,8 +12,6 @@ opts[:status_url] = skrill_status_update_url
   <iframe id="skrill_frame" src="<%= @order.payment_method.redirect_url @order, opts %>"></iframe>
 </fieldset>
 
-<hr class="space" />
-
 <p data-hook="change_payment_method">
   <%= link_to t(:change_payment_method), edit_order_checkout_url(@order, :state => 'payment') %>
 </p>
