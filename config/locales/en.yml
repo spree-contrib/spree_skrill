@@ -1,2 +1,3 @@
 en:
- unable_to_redirect_to_skrill: Failed to redirect to Skrill, please try again.
+  payment_has_been_cancelled: The payment has been cancelled.
+  change_payment_method: Change Payment Method
