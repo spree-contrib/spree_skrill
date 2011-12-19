@@ -2,6 +2,7 @@ class BillingIntegration::Skrill::QuickCheckout < BillingIntegration
   preference :merchant_id, :string
   preference :language, :string, :default => 'EN'
   preference :currency, :string, :default => 'EUR'
+  preference :payment_options, :string, :default => 'ACC'
 
   def provider_class
     ActiveMerchant::Billing::Skrill
@@ -26,17 +27,12 @@ class BillingIntegration::Skrill::QuickCheckout < BillingIntegration
     opts[:state] = order.bill_address.state.nil? ? order.bill_address.state_name.to_s : order.bill_address.state.abbr
     opts[:country] = order.bill_address.country.name
 
+    opts[:hide_login] = 1
     opts[:merchant_fields] = 'platform'
     opts[:platform] = 'Spree'
 
     skrill = self.provider
-    sid = skrill.setup_payment_session(opts)
-
-    if sid =~ /\A[a-z0-9]{32}\z/
-      skrill.session_url(sid)
-    else
-      raise "Unexpected response from Skrill"
-    end
+    skrill.payment_url(opts)
   end
 
   private

@@ -1,7 +1,7 @@
 CheckoutController.class_eval do
-  before_filter :redirect_to_skrill_if_needed, :only => [:update]
-  skip_before_filter :load_order, :only => [:skrill_success]
-  skip_before_filter :check_authorization, :only => [:skrill_success]
+  # before_filter :redirect_to_skrill_if_needed, :only => [:update]
+  # skip_before_filter :load_order, :only => [:skrill_success]
+  # skip_before_filter :check_authorization, :only => [:skrill_success]
 
   def skrill_cancel
     flash[:error] = t(:payment_has_been_cancelled)

@@ -6,17 +6,11 @@ module ActiveMerchant #:nodoc:
         "https://www.moneybookers.com/app/payment.pl"
       end
 
-      def session_url(session_id)
-        "#{service_url}?sid=#{session_id}"
-      end
-
-      def setup_payment_session(opts)
+      def payment_url(opts)
         post = PostData.new
         post.merge! opts
 
-        post[:prepare_only] = true
-
-        ssl_post(service_url, post.to_s)
+        "#{service_url}?#{post.to_s}"
       end
 
     end
