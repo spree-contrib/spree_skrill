@@ -1,3 +1,4 @@
 en:
   payment_has_been_cancelled: The payment has been cancelled.
   change_payment_method: Change Payment Method
+  complete_skrill_checkout: Please complete Skrill checkout before continuing

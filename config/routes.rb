@@ -4,7 +4,7 @@ Spree::Core::Engine.routes.draw do
     resource :checkout, :controller => 'checkout' do
       member do
         get :skrill_cancel
-        get :skrill_success
+        get :skrill_return
       end
     end
   end
