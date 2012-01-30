@@ -15,7 +15,7 @@ module Spree
       set_global_options(opts)
 
       opts[:detail1_text] = order.number
-      opts[:detail1_description] = "#{rand(999)} Order Number:"
+      opts[:detail1_description] = "Order:"
 
       opts[:pay_from_email] = order.email
       opts[:firstname] = order.bill_address.firstname
