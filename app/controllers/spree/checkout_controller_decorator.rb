@@ -3,19 +3,26 @@ module Spree
     before_filter :confirm_skrill, :only => [:update]
 
     def skrill_return
-      if @order.payments.where(:source_type => 'Spree::SkrillTransaction').present?
-          #need to force checkout to complete state
-          until @order.state == "complete"
-            if @order.next!
-              @order.update!
-              state_callback(:after)
-            end
-          end
-          flash.notice = t(:order_processed_successfully)
-          redirect_to completion_route
-      else
-        redirect_to root_url
+
+      unless @order.payments.where(:source_type => 'Spree::SkrillTransaction').present?
+        payment_method = PaymentMethod.find(params[:payment_method_id])
+        skrill_transaction = SkrillTransaction.new
+
+        payment = @order.payments.create(:amount => @order.total,
+                                         :source => skrill_transaction,
+                                         :payment_method => payment_method)
+        payment.started_processing!
+        payment.pend!
       end
+
+      until @order.state == "complete"
+        if @order.next!
+          @order.update!
+          state_callback(:after)
+        end
+      end
+      flash.notice = t(:order_processed_successfully)
+      redirect_to completion_route
     end
 
     def skrill_cancel

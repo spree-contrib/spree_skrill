@@ -5,9 +5,18 @@ module Spree
       payment_method = PaymentMethod.find(params[:payment_method_id])
       skrill_transaction = SkrillTransaction.create_from_postback params
 
-      payment = @order.payments.create(:amount => @order.total,
-                                       :source => skrill_transaction,
-                                       :payment_method => payment_method)
+      payment = @order.payments.where(:state => "pending",
+                                      :payment_method_id => payment_method).first
+
+      if payment
+        payment.source = skrill_transaction
+        payment.save
+      else
+        payment = @order.payments.create(:amount => @order.total,
+                                         :source => skrill_transaction,
+                                         :payment_method => payment_method)
+      end
+
       payment.started_processing!
 
        unless payment.completed?
