@@ -7,8 +7,8 @@ Gem::Specification.new do |s|
   s.description = 'Payment Method for Skrill Transactions for Spree'
   s.required_ruby_version = '>= 1.8.7'
 
-  s.author            = 'Brian D. Quinn'
-  s.email             = 'brian@spreecommerce.com'
+  s.authors     = ['Brian D. Quinn', 'Chris Mar']
+  s.email       = 'support@spreecommerce.com'
 
   s.files         = `git ls-files`.split("\n")
   s.test_files    = `git ls-files -- {test,spec,features}/*`.split("\n")
@@ -17,5 +17,6 @@ Gem::Specification.new do |s|
 
   s.add_dependency('spree_core', '>=1.0.0')
   s.add_development_dependency 'rspec-rails'
+
 end
 
