@@ -40,7 +40,7 @@ module SpreeSkrill
 
     initializer "spree_skrill.register.payment_methods" do |app|
       app.config.spree.payment_methods += [
-        Spree::BillingIntegration::Skrill::QuickCheckout
+        BillingIntegration::Skrill::QuickCheckout
       ]
     end
 
