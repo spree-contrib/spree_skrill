@@ -2,7 +2,7 @@
 Gem::Specification.new do |s|
   s.platform    = Gem::Platform::RUBY
   s.name        = 'spree_skrill'
-  s.version     = '1.0.1'
+  s.version     = '1.0.2'
   s.summary     = 'Spree Extenstion for Skrill'
   s.description = 'Payment Method for Skrill Transactions for Spree'
   s.required_ruby_version = '>= 1.8.7'
