@@ -8,9 +8,10 @@ module Spree
         payment_method = PaymentMethod.find(params[:payment_method_id])
         skrill_transaction = SkrillTransaction.new
 
-        payment = @order.payments.create(:amount => @order.total,
+        payment = @order.payments.create({:amount => @order.total,
                                          :source => skrill_transaction,
-                                         :payment_method => payment_method)
+                                         :payment_method => payment_method},
+                                         :without_protection => true)
         payment.started_processing!
         payment.pend!
       end
